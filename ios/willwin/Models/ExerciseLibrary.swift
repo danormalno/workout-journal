@@ -1,0 +1,978 @@
+import Foundation
+
+/// Запис у базі вправ з перекладами на всі мови.
+struct LibraryExercise: Identifiable, Hashable {
+    let id: String
+    let muscleGroup: MuscleGroup
+    let names: [AppLanguage: String]
+    
+    func localizedName(for lang: AppLanguage?) -> String {
+        let l = lang ?? .en
+        return names[l] ?? names[.en] ?? id
+    }
+}
+
+enum ExerciseLibrary {
+    static let all: [LibraryExercise] = [
+        
+        // MARK: - ГРУДИ
+        LibraryExercise(id: "bench_press_barbell", muscleGroup: .chest, names: [
+            .uk: "Жим штанги лежачи", .en: "Barbell Bench Press", .ru: "Жим штанги лёжа",
+            .es: "Press de banca con barra", .de: "Bankdrücken mit Langhantel",
+            .fr: "Développé couché à la barre", .pt: "Supino reto com barra",
+            .pl: "Wyciskanie sztangi na ławce", .it: "Panca piana con bilanciere",
+        ]),
+        LibraryExercise(id: "incline_bench_press_barbell", muscleGroup: .chest, names: [
+            .uk: "Жим штанги на похилій вгору", .en: "Incline Barbell Bench Press",
+            .ru: "Жим штанги на наклонной вверх", .es: "Press inclinado con barra",
+            .de: "Schrägbankdrücken mit Langhantel", .fr: "Développé incliné à la barre",
+            .pt: "Supino inclinado com barra", .pl: "Wyciskanie sztangi na skosie",
+            .it: "Panca inclinata con bilanciere",
+        ]),
+        LibraryExercise(id: "decline_bench_press_barbell", muscleGroup: .chest, names: [
+            .uk: "Жим штанги на похилій вниз", .en: "Decline Barbell Bench Press",
+            .ru: "Жим штанги на наклонной вниз", .es: "Press declinado con barra",
+            .de: "Negativ-Bankdrücken Langhantel", .fr: "Développé décliné à la barre",
+            .pt: "Supino declinado com barra", .pl: "Wyciskanie sztangi ujemnym kątem",
+            .it: "Panca declinata con bilanciere",
+        ]),
+        LibraryExercise(id: "close_grip_bench_press", muscleGroup: .chest, names: [
+            .uk: "Жим штанги вузьким хватом", .en: "Close-Grip Bench Press",
+            .ru: "Жим штанги узким хватом", .es: "Press de banca agarre cerrado",
+            .de: "Engbankdrücken", .fr: "Développé couché prise serrée",
+            .pt: "Supino com pegada fechada", .pl: "Wyciskanie sztangi wąskim chwytem",
+            .it: "Panca presa stretta",
+        ]),
+        LibraryExercise(id: "bench_press_dumbbell", muscleGroup: .chest, names: [
+            .uk: "Жим гантелей лежачи", .en: "Dumbbell Bench Press",
+            .ru: "Жим гантелей лёжа", .es: "Press con mancuernas",
+            .de: "Kurzhantel-Bankdrücken", .fr: "Développé couché haltères",
+            .pt: "Supino com halteres", .pl: "Wyciskanie hantli leżąc",
+            .it: "Panca con manubri",
+        ]),
+        LibraryExercise(id: "incline_bench_press_dumbbell", muscleGroup: .chest, names: [
+            .uk: "Жим гантелей на похилій вгору", .en: "Incline Dumbbell Press",
+            .ru: "Жим гантелей на наклонной вверх", .es: "Press inclinado con mancuernas",
+            .de: "Schrägbankdrücken Kurzhanteln", .fr: "Développé incliné haltères",
+            .pt: "Supino inclinado com halteres", .pl: "Wyciskanie hantli na skosie",
+            .it: "Panca inclinata con manubri",
+        ]),
+        LibraryExercise(id: "decline_bench_press_dumbbell", muscleGroup: .chest, names: [
+            .uk: "Жим гантелей на похилій вниз", .en: "Decline Dumbbell Press",
+            .ru: "Жим гантелей на наклонной вниз", .es: "Press declinado con mancuernas",
+            .de: "Negativ-Bankdrücken Kurzhanteln", .fr: "Développé décliné haltères",
+            .pt: "Supino declinado com halteres", .pl: "Wyciskanie hantli ujemnym kątem",
+            .it: "Panca declinata con manubri",
+        ]),
+        LibraryExercise(id: "smith_bench_press", muscleGroup: .chest, names: [
+            .uk: "Жим лежачи в Сміті", .en: "Smith Machine Bench Press",
+            .ru: "Жим лёжа в Смите", .es: "Press de banca en máquina Smith",
+            .de: "Bankdrücken Smith-Maschine", .fr: "Développé couché Smith",
+            .pt: "Supino na máquina Smith", .pl: "Wyciskanie na maszynie Smitha",
+            .it: "Panca alla Smith machine",
+        ]),
+        LibraryExercise(id: "smith_incline_press", muscleGroup: .chest, names: [
+            .uk: "Жим на похилій вгору в Сміті", .en: "Smith Machine Incline Press",
+            .ru: "Жим на наклонной вверх в Смите", .es: "Press inclinado en máquina Smith",
+            .de: "Schrägbankdrücken Smith-Maschine", .fr: "Développé incliné Smith",
+            .pt: "Supino inclinado na Smith", .pl: "Wyciskanie skos na Smith",
+            .it: "Panca inclinata alla Smith",
+        ]),
+        LibraryExercise(id: "smith_decline_press", muscleGroup: .chest, names: [
+            .uk: "Жим на похилій вниз в Сміті", .en: "Smith Machine Decline Press",
+            .ru: "Жим на наклонной вниз в Смите", .es: "Press declinado en máquina Smith",
+            .de: "Negativ-Bankdrücken Smith-Maschine", .fr: "Développé décliné Smith",
+            .pt: "Supino declinado na Smith", .pl: "Wyciskanie ujemnym na Smith",
+            .it: "Panca declinata alla Smith",
+        ]),
+        LibraryExercise(id: "machine_chest_press", muscleGroup: .chest, names: [
+            .uk: "Жим в тренажері на груди", .en: "Machine Chest Press",
+            .ru: "Жим в тренажёре на грудь", .es: "Press de pecho en máquina",
+            .de: "Brustpresse Maschine", .fr: "Développé pectoraux machine",
+            .pt: "Supino na máquina", .pl: "Wyciskanie na maszynie",
+            .it: "Chest press alla macchina",
+        ]),
+        LibraryExercise(id: "dumbbell_fly_flat", muscleGroup: .chest, names: [
+            .uk: "Розводка гантелей лежачи", .en: "Flat Dumbbell Fly",
+            .ru: "Разводка гантелей лёжа", .es: "Aperturas con mancuernas",
+            .de: "Fliegende Kurzhantel flach", .fr: "Écarté haltères couché",
+            .pt: "Crucifixo com halteres", .pl: "Rozpiętki z hantlami",
+            .it: "Croci con manubri piano",
+        ]),
+        LibraryExercise(id: "dumbbell_fly_incline", muscleGroup: .chest, names: [
+            .uk: "Розводка гантелей на похилій", .en: "Incline Dumbbell Fly",
+            .ru: "Разводка гантелей на наклонной", .es: "Aperturas inclinadas",
+            .de: "Fliegende Kurzhantel Schrägbank", .fr: "Écarté haltères incliné",
+            .pt: "Crucifixo inclinado", .pl: "Rozpiętki na ławce skośnej",
+            .it: "Croci inclinate",
+        ]),
+        LibraryExercise(id: "cable_crossover_high", muscleGroup: .chest, names: [
+            .uk: "Кросовер з верхніх блоків", .en: "High Cable Crossover",
+            .ru: "Кроссовер с верхних блоков", .es: "Cruce de polea alto",
+            .de: "Kabelzug Crossover oben", .fr: "Crossover poulie haute",
+            .pt: "Crossover polia alta", .pl: "Krzyżowanie linek górne",
+            .it: "Croci ai cavi alti",
+        ]),
+        LibraryExercise(id: "cable_crossover_mid", muscleGroup: .chest, names: [
+            .uk: "Кросовер з середніх блоків", .en: "Mid Cable Crossover",
+            .ru: "Кроссовер со средних блоков", .es: "Cruce de polea medio",
+            .de: "Kabelzug Crossover mittig", .fr: "Crossover poulie milieu",
+            .pt: "Crossover polia média", .pl: "Krzyżowanie linek środkowe",
+            .it: "Croci ai cavi medi",
+        ]),
+        LibraryExercise(id: "cable_crossover_low", muscleGroup: .chest, names: [
+            .uk: "Кросовер з нижніх блоків", .en: "Low Cable Crossover",
+            .ru: "Кроссовер с нижних блоков", .es: "Cruce de polea bajo",
+            .de: "Kabelzug Crossover unten", .fr: "Crossover poulie basse",
+            .pt: "Crossover polia baixa", .pl: "Krzyżowanie linek dolne",
+            .it: "Croci ai cavi bassi",
+        ]),
+        LibraryExercise(id: "pec_deck", muscleGroup: .chest, names: [
+            .uk: "Пек-дек (зведення в тренажері)", .en: "Pec Deck Fly",
+            .ru: "Сведение рук в тренажёре (пек-дек)", .es: "Contractor de pectorales",
+            .de: "Butterfly-Maschine", .fr: "Pec deck",
+            .pt: "Voador (peck deck)", .pl: "Butterfly",
+            .it: "Pec deck",
+        ]),
+        LibraryExercise(id: "push_up", muscleGroup: .chest, names: [
+            .uk: "Віджимання від підлоги", .en: "Push-Up",
+            .ru: "Отжимания от пола", .es: "Flexiones",
+            .de: "Liegestütze", .fr: "Pompes",
+            .pt: "Flexão de braço", .pl: "Pompki",
+            .it: "Piegamenti sulle braccia",
+        ]),
+        LibraryExercise(id: "push_up_wide", muscleGroup: .chest, names: [
+            .uk: "Віджимання широким хватом", .en: "Wide Push-Up",
+            .ru: "Отжимания широким хватом", .es: "Flexiones con agarre amplio",
+            .de: "Weite Liegestütze", .fr: "Pompes prise large",
+            .pt: "Flexão com pegada aberta", .pl: "Pompki szerokim chwytem",
+            .it: "Piegamenti presa larga",
+        ]),
+        LibraryExercise(id: "push_up_decline", muscleGroup: .chest, names: [
+            .uk: "Віджимання з піднятими ногами", .en: "Decline Push-Up",
+            .ru: "Отжимания с поднятыми ногами", .es: "Flexiones con pies elevados",
+            .de: "Liegestütze Füße erhöht", .fr: "Pompes pieds surélevés",
+            .pt: "Flexão com pés elevados", .pl: "Pompki ze stopami w górze",
+            .it: "Piegamenti con piedi sollevati",
+        ]),
+        LibraryExercise(id: "dips_chest", muscleGroup: .chest, names: [
+            .uk: "Віджимання на брусах (груди)", .en: "Chest Dips",
+            .ru: "Отжимания на брусьях (грудь)", .es: "Fondos en paralelas (pecho)",
+            .de: "Dips (Brust)", .fr: "Dips pectoraux",
+            .pt: "Paralelas para peito", .pl: "Dipy na poręczach (klatka)",
+            .it: "Dips per pettorali",
+        ]),
+        LibraryExercise(id: "pullover_dumbbell", muscleGroup: .chest, names: [
+            .uk: "Пуловер з гантеллю", .en: "Dumbbell Pullover",
+            .ru: "Пуловер с гантелью", .es: "Pullover con mancuerna",
+            .de: "Überzüge mit Kurzhantel", .fr: "Pull-over haltère",
+            .pt: "Pullover com halter", .pl: "Pullover z hantlą",
+            .it: "Pullover con manubrio",
+        ]),
+        
+        // MARK: - СПИНА
+        LibraryExercise(id: "deadlift", muscleGroup: .back, names: [
+            .uk: "Станова тяга", .en: "Deadlift", .ru: "Становая тяга",
+            .es: "Peso muerto", .de: "Kreuzheben", .fr: "Soulevé de terre",
+            .pt: "Levantamento terra", .pl: "Martwy ciąg", .it: "Stacco da terra",
+        ]),
+        LibraryExercise(id: "deadlift_sumo", muscleGroup: .back, names: [
+            .uk: "Станова тяга сумо", .en: "Sumo Deadlift",
+            .ru: "Становая тяга сумо", .es: "Peso muerto sumo",
+            .de: "Sumo-Kreuzheben", .fr: "Soulevé de terre sumo",
+            .pt: "Terra sumô", .pl: "Martwy ciąg sumo", .it: "Stacco sumo",
+        ]),
+        LibraryExercise(id: "romanian_deadlift", muscleGroup: .back, names: [
+            .uk: "Румунська тяга зі штангою", .en: "Romanian Deadlift",
+            .ru: "Румынская тяга со штангой", .es: "Peso muerto rumano",
+            .de: "Rumänisches Kreuzheben", .fr: "Soulevé de terre roumain",
+            .pt: "Levantamento romeno", .pl: "Rumuński martwy ciąg",
+            .it: "Stacco rumeno",
+        ]),
+        LibraryExercise(id: "romanian_deadlift_dumbbell", muscleGroup: .back, names: [
+            .uk: "Румунська тяга з гантелями", .en: "Dumbbell Romanian Deadlift",
+            .ru: "Румынская тяга с гантелями", .es: "Peso muerto rumano con mancuernas",
+            .de: "Rumänisches Kreuzheben Kurzhanteln", .fr: "Soulevé roumain haltères",
+            .pt: "Romeno com halteres", .pl: "Rumuński z hantlami",
+            .it: "Stacco rumeno con manubri",
+        ]),
+        LibraryExercise(id: "pull_up_overhand", muscleGroup: .back, names: [
+            .uk: "Підтягування прямим хватом", .en: "Pull-Up (Overhand)",
+            .ru: "Подтягивания прямым хватом", .es: "Dominadas pronas",
+            .de: "Klimmzüge Obergriff", .fr: "Tractions prise pronation",
+            .pt: "Barra pegada pronada", .pl: "Podciąganie nachwytem",
+            .it: "Trazioni prona",
+        ]),
+        LibraryExercise(id: "pull_up_underhand", muscleGroup: .back, names: [
+            .uk: "Підтягування зворотним хватом", .en: "Chin-Up (Underhand)",
+            .ru: "Подтягивания обратным хватом", .es: "Dominadas supinas",
+            .de: "Klimmzüge Untergriff", .fr: "Tractions prise supination",
+            .pt: "Barra pegada supinada", .pl: "Podciąganie podchwytem",
+            .it: "Trazioni supina",
+        ]),
+        LibraryExercise(id: "pull_up_neutral", muscleGroup: .back, names: [
+            .uk: "Підтягування нейтральним хватом", .en: "Neutral Grip Pull-Up",
+            .ru: "Подтягивания нейтральным хватом", .es: "Dominadas agarre neutro",
+            .de: "Klimmzüge Hammergriff", .fr: "Tractions prise neutre",
+            .pt: "Barra com pegada neutra", .pl: "Podciąganie neutralnym chwytem",
+            .it: "Trazioni presa neutra",
+        ]),
+        LibraryExercise(id: "pull_up_wide", muscleGroup: .back, names: [
+            .uk: "Підтягування широким хватом", .en: "Wide Grip Pull-Up",
+            .ru: "Подтягивания широким хватом", .es: "Dominadas agarre amplio",
+            .de: "Klimmzüge weiter Griff", .fr: "Tractions prise large",
+            .pt: "Barra pegada aberta", .pl: "Podciąganie szerokim chwytem",
+            .it: "Trazioni presa larga",
+        ]),
+        LibraryExercise(id: "lat_pulldown_wide", muscleGroup: .back, names: [
+            .uk: "Верхній блок широким хватом", .en: "Wide Grip Lat Pulldown",
+            .ru: "Верхний блок широким хватом", .es: "Jalón al pecho agarre amplio",
+            .de: "Latzug breit", .fr: "Tirage poulie haute large",
+            .pt: "Puxada alta pegada aberta", .pl: "Ściąganie drążka szeroko",
+            .it: "Lat machine presa larga",
+        ]),
+        LibraryExercise(id: "lat_pulldown_close", muscleGroup: .back, names: [
+            .uk: "Верхній блок вузьким хватом", .en: "Close Grip Lat Pulldown",
+            .ru: "Верхний блок узким хватом", .es: "Jalón agarre cerrado",
+            .de: "Latzug eng", .fr: "Tirage poulie haute serré",
+            .pt: "Puxada pegada fechada", .pl: "Ściąganie drążka wąsko",
+            .it: "Lat machine presa stretta",
+        ]),
+        LibraryExercise(id: "lat_pulldown_reverse", muscleGroup: .back, names: [
+            .uk: "Верхній блок зворотним хватом", .en: "Reverse Grip Lat Pulldown",
+            .ru: "Верхний блок обратным хватом", .es: "Jalón agarre supino",
+            .de: "Latzug Untergriff", .fr: "Tirage poulie haute supination",
+            .pt: "Puxada pegada supinada", .pl: "Ściąganie podchwytem",
+            .it: "Lat machine presa supina",
+        ]),
+        LibraryExercise(id: "lat_pulldown_neutral", muscleGroup: .back, names: [
+            .uk: "Верхній блок нейтральним хватом", .en: "Neutral Grip Lat Pulldown",
+            .ru: "Верхний блок нейтральным хватом", .es: "Jalón agarre neutro",
+            .de: "Latzug Hammergriff", .fr: "Tirage poulie haute neutre",
+            .pt: "Puxada pegada neutra", .pl: "Ściąganie neutralnie",
+            .it: "Lat machine presa neutra",
+        ]),
+        LibraryExercise(id: "lat_pulldown_behind", muscleGroup: .back, names: [
+            .uk: "Верхній блок за голову", .en: "Behind-the-Neck Lat Pulldown",
+            .ru: "Верхний блок за голову", .es: "Jalón tras nuca",
+            .de: "Nackenlatzug", .fr: "Tirage poulie haute nuque",
+            .pt: "Puxada por trás da nuca", .pl: "Ściąganie za kark",
+            .it: "Lat machine dietro nuca",
+        ]),
+        LibraryExercise(id: "seated_row_v", muscleGroup: .back, names: [
+            .uk: "Горизонтальний блок V-ручкою", .en: "Seated Cable Row (V-Grip)",
+            .ru: "Горизонтальный блок V-рукоятью", .es: "Remo sentado polea V",
+            .de: "Rudern am Kabelzug V-Griff", .fr: "Rowing assis prise V",
+            .pt: "Remada baixa pegada V", .pl: "Wiosłowanie z V",
+            .it: "Rematore al cavo presa V",
+        ]),
+        LibraryExercise(id: "seated_row_wide", muscleGroup: .back, names: [
+            .uk: "Горизонтальний блок широким хватом", .en: "Seated Cable Row (Wide)",
+            .ru: "Горизонтальный блок широким хватом", .es: "Remo sentado amplio",
+            .de: "Rudern Kabelzug breit", .fr: "Rowing assis prise large",
+            .pt: "Remada baixa pegada aberta", .pl: "Wiosłowanie szeroko",
+            .it: "Rematore al cavo presa larga",
+        ]),
+        LibraryExercise(id: "seated_row_reverse", muscleGroup: .back, names: [
+            .uk: "Горизонтальний блок зворотним хватом", .en: "Seated Cable Row (Reverse)",
+            .ru: "Горизонтальный блок обратным хватом", .es: "Remo sentado supino",
+            .de: "Rudern Kabelzug Untergriff", .fr: "Rowing assis supination",
+            .pt: "Remada pegada supinada", .pl: "Wiosłowanie podchwytem",
+            .it: "Rematore al cavo supina",
+        ]),
+        LibraryExercise(id: "seated_row_rope", muscleGroup: .back, names: [
+            .uk: "Горизонтальний блок з канатом", .en: "Seated Cable Row (Rope)",
+            .ru: "Горизонтальный блок с канатом", .es: "Remo sentado con cuerda",
+            .de: "Rudern Kabelzug mit Seil", .fr: "Rowing assis corde",
+            .pt: "Remada com corda", .pl: "Wiosłowanie z liną",
+            .it: "Rematore con corda",
+        ]),
+        LibraryExercise(id: "bent_over_row_barbell", muscleGroup: .back, names: [
+            .uk: "Тяга штанги в нахилі", .en: "Bent-Over Barbell Row",
+            .ru: "Тяга штанги в наклоне", .es: "Remo con barra",
+            .de: "Langhantelrudern vorgebeugt", .fr: "Rowing barre",
+            .pt: "Remada curvada com barra", .pl: "Wiosłowanie sztangą w opadzie",
+            .it: "Rematore con bilanciere",
+        ]),
+        LibraryExercise(id: "bent_over_row_reverse", muscleGroup: .back, names: [
+            .uk: "Тяга штанги зворотним хватом", .en: "Reverse Grip Barbell Row",
+            .ru: "Тяга штанги обратным хватом", .es: "Remo agarre supino",
+            .de: "Langhantelrudern Untergriff", .fr: "Rowing barre supination",
+            .pt: "Remada pegada supinada", .pl: "Wiosłowanie podchwytem",
+            .it: "Rematore presa supina",
+        ]),
+        LibraryExercise(id: "one_arm_dumbbell_row", muscleGroup: .back, names: [
+            .uk: "Тяга гантелі однією рукою", .en: "One-Arm Dumbbell Row",
+            .ru: "Тяга гантели одной рукой", .es: "Remo con mancuerna a una mano",
+            .de: "Einarmiges Kurzhantelrudern", .fr: "Rowing haltère un bras",
+            .pt: "Remada com halter unilateral", .pl: "Wiosłowanie jednorącz",
+            .it: "Rematore con manubrio",
+        ]),
+        LibraryExercise(id: "chest_supported_row", muscleGroup: .back, names: [
+            .uk: "Тяга гантелей з упором на лаву", .en: "Chest-Supported Row",
+            .ru: "Тяга гантелей с упором на скамью", .es: "Remo en banco inclinado",
+            .de: "Kurzhantelrudern Schrägbank", .fr: "Rowing haltères banc incliné",
+            .pt: "Remada apoiada no banco", .pl: "Wiosłowanie na ławce skośnej",
+            .it: "Rematore appoggiato",
+        ]),
+        LibraryExercise(id: "t_bar_row", muscleGroup: .back, names: [
+            .uk: "Тяга Т-грифа", .en: "T-Bar Row", .ru: "Тяга Т-грифа",
+            .es: "Remo barra T", .de: "T-Bar-Rudern", .fr: "Rowing T-bar",
+            .pt: "Remada cavalinho", .pl: "Wiosłowanie T-bar", .it: "T-bar row",
+        ]),
+        LibraryExercise(id: "machine_row", muscleGroup: .back, names: [
+            .uk: "Тяга в тренажері сидячи", .en: "Machine Row",
+            .ru: "Тяга в тренажёре сидя", .es: "Remo en máquina",
+            .de: "Rudern an der Maschine", .fr: "Rowing machine",
+            .pt: "Remada na máquina", .pl: "Wiosłowanie na maszynie",
+            .it: "Rematore alla macchina",
+        ]),
+        LibraryExercise(id: "hyperextension", muscleGroup: .back, names: [
+            .uk: "Гіперекстензія", .en: "Hyperextension", .ru: "Гиперэкстензия",
+            .es: "Hiperextensión", .de: "Hyperextension", .fr: "Extension lombaire",
+            .pt: "Hiperextensão", .pl: "Hiperekstensja", .it: "Iperestensione",
+        ]),
+        LibraryExercise(id: "shrugs_barbell", muscleGroup: .back, names: [
+            .uk: "Шраги зі штангою", .en: "Barbell Shrugs",
+            .ru: "Шраги со штангой", .es: "Encogimientos con barra",
+            .de: "Langhantel-Shrugs", .fr: "Shrugs barre",
+            .pt: "Encolhimento com barra", .pl: "Wzruszenia ramion sztangą",
+            .it: "Scrollate con bilanciere",
+        ]),
+        LibraryExercise(id: "shrugs_dumbbell", muscleGroup: .back, names: [
+            .uk: "Шраги з гантелями", .en: "Dumbbell Shrugs",
+            .ru: "Шраги с гантелями", .es: "Encogimientos con mancuernas",
+            .de: "Kurzhantel-Shrugs", .fr: "Shrugs haltères",
+            .pt: "Encolhimento com halteres", .pl: "Wzruszenia ramion hantlami",
+            .it: "Scrollate con manubri",
+        ]),
+        LibraryExercise(id: "straight_arm_pulldown", muscleGroup: .back, names: [
+            .uk: "Тяга прямими руками на блоці", .en: "Straight-Arm Pulldown",
+            .ru: "Тяга прямыми руками на блоке", .es: "Jalón brazos rectos",
+            .de: "Latzug gestreckte Arme", .fr: "Tirage bras tendus",
+            .pt: "Pulldown braços retos", .pl: "Ściąganie prostymi rękami",
+            .it: "Pulldown a braccia tese",
+        ]),
+        LibraryExercise(id: "good_morning", muscleGroup: .back, names: [
+            .uk: "Гуд морнінг (нахили зі штангою)", .en: "Good Morning",
+            .ru: "Гуд морнинг", .es: "Good morning", .de: "Good Morning",
+            .fr: "Good morning", .pt: "Good morning", .pl: "Good morning",
+            .it: "Good morning",
+        ]),
+        
+        // MARK: - ПЛЕЧІ
+        LibraryExercise(id: "overhead_press_barbell", muscleGroup: .shoulders, names: [
+            .uk: "Армійський жим стоячи", .en: "Overhead Press (Barbell)",
+            .ru: "Армейский жим стоя", .es: "Press militar con barra",
+            .de: "Schulterdrücken Langhantel", .fr: "Développé militaire",
+            .pt: "Desenvolvimento militar", .pl: "Wyciskanie żołnierskie",
+            .it: "Military press",
+        ]),
+        LibraryExercise(id: "seated_overhead_press", muscleGroup: .shoulders, names: [
+            .uk: "Жим штанги сидячи", .en: "Seated Overhead Press",
+            .ru: "Жим штанги сидя", .es: "Press militar sentado",
+            .de: "Schulterdrücken sitzend", .fr: "Développé militaire assis",
+            .pt: "Desenvolvimento sentado", .pl: "Wyciskanie żołnierskie siedząc",
+            .it: "Military press seduto",
+        ]),
+        LibraryExercise(id: "overhead_press_dumbbell", muscleGroup: .shoulders, names: [
+            .uk: "Жим гантелей стоячи", .en: "Overhead Press (Dumbbell)",
+            .ru: "Жим гантелей стоя", .es: "Press hombros mancuernas",
+            .de: "Schulterdrücken Kurzhantel", .fr: "Développé épaules haltères",
+            .pt: "Desenvolvimento halteres", .pl: "Wyciskanie hantli stojąc",
+            .it: "Lento avanti con manubri",
+        ]),
+        LibraryExercise(id: "seated_dumbbell_press", muscleGroup: .shoulders, names: [
+            .uk: "Жим гантелей сидячи", .en: "Seated Dumbbell Press",
+            .ru: "Жим гантелей сидя", .es: "Press hombros mancuernas sentado",
+            .de: "Kurzhantel-Schulterdrücken sitzend", .fr: "Développé haltères assis",
+            .pt: "Desenvolvimento halteres sentado", .pl: "Wyciskanie hantli siedząc",
+            .it: "Lento avanti seduto",
+        ]),
+        LibraryExercise(id: "arnold_press", muscleGroup: .shoulders, names: [
+            .uk: "Жим Арнольда", .en: "Arnold Press", .ru: "Жим Арнольда",
+            .es: "Press Arnold", .de: "Arnold Press", .fr: "Développé Arnold",
+            .pt: "Press Arnold", .pl: "Wyciskanie Arnolda", .it: "Arnold press",
+        ]),
+        LibraryExercise(id: "smith_overhead_press", muscleGroup: .shoulders, names: [
+            .uk: "Жим стоячи в Сміті", .en: "Smith Machine Overhead Press",
+            .ru: "Жим стоя в Смите", .es: "Press militar en Smith",
+            .de: "Schulterdrücken Smith-Maschine", .fr: "Développé militaire Smith",
+            .pt: "Desenvolvimento Smith", .pl: "Wyciskanie żołnierskie Smith",
+            .it: "Military press alla Smith",
+        ]),
+        LibraryExercise(id: "machine_shoulder_press", muscleGroup: .shoulders, names: [
+            .uk: "Жим в тренажері на плечі", .en: "Machine Shoulder Press",
+            .ru: "Жим в тренажёре на плечи", .es: "Press hombros máquina",
+            .de: "Schulterpresse Maschine", .fr: "Développé épaules machine",
+            .pt: "Desenvolvimento na máquina", .pl: "Wyciskanie na maszynie",
+            .it: "Lento avanti macchina",
+        ]),
+        LibraryExercise(id: "lateral_raise_dumbbell", muscleGroup: .shoulders, names: [
+            .uk: "Махи гантелями в сторони", .en: "Dumbbell Lateral Raise",
+            .ru: "Махи гантелями в стороны", .es: "Elevaciones laterales mancuernas",
+            .de: "Seitheben Kurzhantel", .fr: "Élévations latérales haltères",
+            .pt: "Elevação lateral halteres", .pl: "Wznosy bokiem",
+            .it: "Alzate laterali con manubri",
+        ]),
+        LibraryExercise(id: "lateral_raise_cable", muscleGroup: .shoulders, names: [
+            .uk: "Махи в сторони на нижньому блоці", .en: "Cable Lateral Raise",
+            .ru: "Махи в стороны на нижнем блоке", .es: "Elevaciones laterales polea",
+            .de: "Seitheben Kabelzug", .fr: "Élévations latérales poulie",
+            .pt: "Elevação lateral cabo", .pl: "Wznosy bokiem na wyciągu",
+            .it: "Alzate laterali ai cavi",
+        ]),
+        LibraryExercise(id: "lateral_raise_machine", muscleGroup: .shoulders, names: [
+            .uk: "Махи в сторони в тренажері", .en: "Machine Lateral Raise",
+            .ru: "Махи в стороны в тренажёре", .es: "Elevaciones laterales máquina",
+            .de: "Seitheben Maschine", .fr: "Élévations latérales machine",
+            .pt: "Elevação lateral máquina", .pl: "Wznosy bokiem na maszynie",
+            .it: "Alzate laterali macchina",
+        ]),
+        LibraryExercise(id: "front_raise_dumbbell", muscleGroup: .shoulders, names: [
+            .uk: "Махи гантелями перед собою", .en: "Dumbbell Front Raise",
+            .ru: "Махи гантелями перед собой", .es: "Elevaciones frontales mancuernas",
+            .de: "Frontheben Kurzhantel", .fr: "Élévations frontales haltères",
+            .pt: "Elevação frontal halteres", .pl: "Wznosy przodem",
+            .it: "Alzate frontali con manubri",
+        ]),
+        LibraryExercise(id: "front_raise_barbell", muscleGroup: .shoulders, names: [
+            .uk: "Махи штангою перед собою", .en: "Barbell Front Raise",
+            .ru: "Махи штангой перед собой", .es: "Elevaciones frontales barra",
+            .de: "Frontheben Langhantel", .fr: "Élévations frontales barre",
+            .pt: "Elevação frontal barra", .pl: "Wznosy przodem sztangą",
+            .it: "Alzate frontali con bilanciere",
+        ]),
+        LibraryExercise(id: "rear_delt_fly_dumbbell", muscleGroup: .shoulders, names: [
+            .uk: "Махи гантелями в нахилі", .en: "Bent-Over Rear Delt Fly",
+            .ru: "Махи гантелями в наклоне", .es: "Pájaros con mancuernas",
+            .de: "Reverse Flys vorgebeugt", .fr: "Oiseaux haltères",
+            .pt: "Crucifixo invertido", .pl: "Odwrotne rozpiętki",
+            .it: "Alzate posteriori inclinato",
+        ]),
+        LibraryExercise(id: "rear_delt_fly_machine", muscleGroup: .shoulders, names: [
+            .uk: "Зведення задніх дельт в тренажері", .en: "Reverse Pec Deck",
+            .ru: "Сведение задних дельт в тренажёре", .es: "Pájaros en máquina",
+            .de: "Reverse Pec Deck", .fr: "Oiseaux machine",
+            .pt: "Crucifixo invertido máquina", .pl: "Odwrócone butterfly",
+            .it: "Rear delt machine",
+        ]),
+        LibraryExercise(id: "face_pull", muscleGroup: .shoulders, names: [
+            .uk: "Тяга до обличчя", .en: "Face Pull", .ru: "Тяга к лицу",
+            .es: "Face pull", .de: "Face pull", .fr: "Face pull",
+            .pt: "Face pull", .pl: "Face pull", .it: "Face pull",
+        ]),
+        LibraryExercise(id: "upright_row_barbell", muscleGroup: .shoulders, names: [
+            .uk: "Тяга штанги до підборіддя", .en: "Upright Row (Barbell)",
+            .ru: "Тяга штанги к подбородку", .es: "Remo al mentón barra",
+            .de: "Aufrechtes Rudern Langhantel", .fr: "Tirage menton barre",
+            .pt: "Remada alta com barra", .pl: "Podciąganie pod brodę",
+            .it: "Tirate al mento bilanciere",
+        ]),
+        LibraryExercise(id: "upright_row_cable", muscleGroup: .shoulders, names: [
+            .uk: "Тяга до підборіддя на блоці", .en: "Cable Upright Row",
+            .ru: "Тяга к подбородку на блоке", .es: "Remo al mentón polea",
+            .de: "Aufrechtes Rudern Kabelzug", .fr: "Tirage menton poulie",
+            .pt: "Remada alta no cabo", .pl: "Podciąganie pod brodę wyciąg",
+            .it: "Tirate al mento ai cavi",
+        ]),
+        
+        // MARK: - БІЦЕПС
+        LibraryExercise(id: "barbell_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом штанги на біцепс", .en: "Barbell Curl",
+            .ru: "Подъём штанги на бицепс", .es: "Curl con barra",
+            .de: "Langhantel-Curl", .fr: "Curl barre",
+            .pt: "Rosca direta com barra", .pl: "Uginanie sztangi",
+            .it: "Curl con bilanciere",
+        ]),
+        LibraryExercise(id: "ez_bar_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом EZ-штанги на біцепс", .en: "EZ-Bar Curl",
+            .ru: "Подъём EZ-штанги на бицепс", .es: "Curl con barra Z",
+            .de: "SZ-Hantel-Curl", .fr: "Curl barre EZ",
+            .pt: "Rosca com barra W", .pl: "Uginanie łamanego",
+            .it: "Curl con bilanciere EZ",
+        ]),
+        LibraryExercise(id: "wide_grip_barbell_curl", muscleGroup: .biceps, names: [
+            .uk: "Штанга на біцепс широким хватом", .en: "Wide Grip Barbell Curl",
+            .ru: "Штанга на бицепс широким хватом", .es: "Curl agarre amplio",
+            .de: "Langhantel-Curl breit", .fr: "Curl barre prise large",
+            .pt: "Rosca pegada aberta", .pl: "Uginanie szerokim chwytem",
+            .it: "Curl presa larga",
+        ]),
+        LibraryExercise(id: "close_grip_barbell_curl", muscleGroup: .biceps, names: [
+            .uk: "Штанга на біцепс вузьким хватом", .en: "Close Grip Barbell Curl",
+            .ru: "Штанга на бицепс узким хватом", .es: "Curl agarre cerrado",
+            .de: "Langhantel-Curl eng", .fr: "Curl barre prise serrée",
+            .pt: "Rosca pegada fechada", .pl: "Uginanie wąskim chwytem",
+            .it: "Curl presa stretta",
+        ]),
+        LibraryExercise(id: "dumbbell_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом гантелей на біцепс", .en: "Dumbbell Curl",
+            .ru: "Подъём гантелей на бицепс", .es: "Curl con mancuernas",
+            .de: "Kurzhantel-Curl", .fr: "Curl haltères",
+            .pt: "Rosca direta com halteres", .pl: "Uginanie hantli",
+            .it: "Curl con manubri",
+        ]),
+        LibraryExercise(id: "hammer_curl", muscleGroup: .biceps, names: [
+            .uk: "Молотки з гантелями", .en: "Hammer Curl",
+            .ru: "Молотки с гантелями", .es: "Curl martillo",
+            .de: "Hammer-Curl", .fr: "Curl marteau",
+            .pt: "Rosca martelo", .pl: "Uginanie młotkowe",
+            .it: "Curl a martello",
+        ]),
+        LibraryExercise(id: "zottman_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом Зоттмана", .en: "Zottman Curl", .ru: "Подъём Зоттмана",
+            .es: "Curl Zottman", .de: "Zottman-Curl", .fr: "Curl Zottman",
+            .pt: "Rosca Zottman", .pl: "Uginanie Zottmana", .it: "Curl Zottman",
+        ]),
+        LibraryExercise(id: "incline_dumbbell_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом гантелей на похилій", .en: "Incline Dumbbell Curl",
+            .ru: "Подъём гантелей на наклонной", .es: "Curl en banco inclinado",
+            .de: "Kurzhantel-Curl Schrägbank", .fr: "Curl haltères banc incliné",
+            .pt: "Rosca alternada inclinada", .pl: "Uginanie na ławce skośnej",
+            .it: "Curl panca inclinata",
+        ]),
+        LibraryExercise(id: "concentration_curl", muscleGroup: .biceps, names: [
+            .uk: "Концентровані підйоми", .en: "Concentration Curl",
+            .ru: "Концентрированные подъёмы", .es: "Curl concentrado",
+            .de: "Konzentrations-Curl", .fr: "Curl concentré",
+            .pt: "Rosca concentrada", .pl: "Uginanie koncentryczne",
+            .it: "Curl concentrato",
+        ]),
+        LibraryExercise(id: "preacher_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом на лаві Скотта", .en: "Preacher Curl",
+            .ru: "Подъём на скамье Скотта", .es: "Curl predicador",
+            .de: "Preacher-Curl", .fr: "Curl pupitre",
+            .pt: "Rosca scott", .pl: "Uginanie na modlitewniku",
+            .it: "Curl panca Scott",
+        ]),
+        LibraryExercise(id: "spider_curl", muscleGroup: .biceps, names: [
+            .uk: "Спайдер-кьорл", .en: "Spider Curl", .ru: "Спайдер-кёрл",
+            .es: "Curl araña", .de: "Spider-Curl", .fr: "Curl araignée",
+            .pt: "Rosca aranha", .pl: "Uginanie pająka", .it: "Spider curl",
+        ]),
+        LibraryExercise(id: "cable_curl_straight", muscleGroup: .biceps, names: [
+            .uk: "Кьорл на блоці з прямою ручкою", .en: "Cable Curl (Straight Bar)",
+            .ru: "Кёрл на блоке с прямой рукоятью", .es: "Curl polea barra recta",
+            .de: "Kabel-Curl gerade Stange", .fr: "Curl poulie barre droite",
+            .pt: "Rosca cabo barra reta", .pl: "Uginanie wyciąg prosty",
+            .it: "Curl cavi barra dritta",
+        ]),
+        LibraryExercise(id: "cable_curl_rope", muscleGroup: .biceps, names: [
+            .uk: "Кьорл на блоці з канатом", .en: "Cable Curl (Rope)",
+            .ru: "Кёрл на блоке с канатом", .es: "Curl polea cuerda",
+            .de: "Kabel-Curl mit Seil", .fr: "Curl poulie corde",
+            .pt: "Rosca cabo com corda", .pl: "Uginanie wyciąg z liną",
+            .it: "Curl cavi con corda",
+        ]),
+        LibraryExercise(id: "cable_curl_ez", muscleGroup: .biceps, names: [
+            .uk: "Кьорл на блоці з EZ-ручкою", .en: "Cable Curl (EZ-Bar)",
+            .ru: "Кёрл на блоке с EZ-рукоятью", .es: "Curl polea barra Z",
+            .de: "Kabel-Curl SZ-Stange", .fr: "Curl poulie barre EZ",
+            .pt: "Rosca cabo barra W", .pl: "Uginanie wyciąg łamany",
+            .it: "Curl cavi barra EZ",
+        ]),
+        LibraryExercise(id: "machine_curl", muscleGroup: .biceps, names: [
+            .uk: "Підйом на біцепс в тренажері", .en: "Machine Curl",
+            .ru: "Подъём на бицепс в тренажёре", .es: "Curl en máquina",
+            .de: "Maschinen-Curl", .fr: "Curl machine",
+            .pt: "Rosca na máquina", .pl: "Uginanie na maszynie",
+            .it: "Curl alla macchina",
+        ]),
+        
+        // MARK: - ТРИЦЕПС
+        LibraryExercise(id: "tricep_pushdown_rope", muscleGroup: .triceps, names: [
+            .uk: "Розгинання трицепса з канатом", .en: "Tricep Pushdown (Rope)",
+            .ru: "Разгибание трицепса с канатом", .es: "Extensión tríceps con cuerda",
+            .de: "Trizeps-Drücken mit Seil", .fr: "Extensions triceps corde",
+            .pt: "Tríceps polia com corda", .pl: "Prostowanie ramion z liną",
+            .it: "Pushdown con corda",
+        ]),
+        LibraryExercise(id: "tricep_pushdown_straight", muscleGroup: .triceps, names: [
+            .uk: "Розгинання трицепса прямою ручкою", .en: "Tricep Pushdown (Straight)",
+            .ru: "Разгибание трицепса прямой рукоятью", .es: "Extensión tríceps barra recta",
+            .de: "Trizeps-Drücken gerade Stange", .fr: "Extensions triceps barre",
+            .pt: "Tríceps barra reta", .pl: "Prostowanie ramion drążkiem",
+            .it: "Pushdown barra dritta",
+        ]),
+        LibraryExercise(id: "tricep_pushdown_v", muscleGroup: .triceps, names: [
+            .uk: "Розгинання трицепса V-ручкою", .en: "Tricep Pushdown (V-Bar)",
+            .ru: "Разгибание трицепса V-рукоятью", .es: "Extensión tríceps barra V",
+            .de: "Trizeps-Drücken V-Griff", .fr: "Extensions triceps prise V",
+            .pt: "Tríceps barra V", .pl: "Prostowanie ramion V",
+            .it: "Pushdown presa V",
+        ]),
+        LibraryExercise(id: "tricep_pushdown_reverse", muscleGroup: .triceps, names: [
+            .uk: "Розгинання трицепса зворотним хватом", .en: "Reverse Grip Pushdown",
+            .ru: "Разгибание трицепса обратным хватом", .es: "Extensión supina",
+            .de: "Trizeps-Drücken Untergriff", .fr: "Extensions triceps supination",
+            .pt: "Tríceps pegada supinada", .pl: "Prostowanie podchwytem",
+            .it: "Pushdown presa supina",
+        ]),
+        LibraryExercise(id: "tricep_overhead_dumbbell", muscleGroup: .triceps, names: [
+            .uk: "Французький жим з гантеллю стоячи", .en: "Overhead Tricep Extension",
+            .ru: "Французский жим с гантелью стоя", .es: "Extensión tríceps sobre cabeza",
+            .de: "Trizepsstrecken über Kopf", .fr: "Extension triceps au-dessus",
+            .pt: "Tríceps francês com halter", .pl: "Wyprost ramion zza głowy",
+            .it: "Estensione triceps sopra testa",
+        ]),
+        LibraryExercise(id: "tricep_overhead_rope", muscleGroup: .triceps, names: [
+            .uk: "Французький жим з канатом", .en: "Overhead Rope Extension",
+            .ru: "Французский жим с канатом", .es: "Extensión con cuerda sobre cabeza",
+            .de: "Trizepsstrecken über Kopf Seil", .fr: "Extension corde au-dessus",
+            .pt: "Tríceps corda acima da cabeça", .pl: "Prostowanie zza głowy z liną",
+            .it: "Estensione sopra testa con corda",
+        ]),
+        LibraryExercise(id: "skull_crusher_ez", muscleGroup: .triceps, names: [
+            .uk: "Французький жим лежачи EZ", .en: "Skull Crusher (EZ-Bar)",
+            .ru: "Французский жим лёжа EZ", .es: "Press francés barra Z",
+            .de: "Skull Crusher SZ-Stange", .fr: "Barre au front EZ",
+            .pt: "Testa com barra W", .pl: "Wyprost leżąc łamany",
+            .it: "French press con bilanciere EZ",
+        ]),
+        LibraryExercise(id: "skull_crusher_dumbbell", muscleGroup: .triceps, names: [
+            .uk: "Французький жим лежачи з гантелями", .en: "Skull Crusher (Dumbbells)",
+            .ru: "Французский жим лёжа с гантелями", .es: "Press francés mancuernas",
+            .de: "Skull Crusher Kurzhanteln", .fr: "Barre au front haltères",
+            .pt: "Testa com halteres", .pl: "Wyprost leżąc hantlami",
+            .it: "French press con manubri",
+        ]),
+        LibraryExercise(id: "dips_tricep", muscleGroup: .triceps, names: [
+            .uk: "Віджимання на брусах для трицепса", .en: "Tricep Dips",
+            .ru: "Отжимания на брусьях для трицепса", .es: "Fondos para tríceps",
+            .de: "Dips für Trizeps", .fr: "Dips triceps",
+            .pt: "Paralelas para tríceps", .pl: "Dipy na trójgłowy",
+            .it: "Dips per tricipiti",
+        ]),
+        LibraryExercise(id: "bench_dips", muscleGroup: .triceps, names: [
+            .uk: "Зворотні віджимання від лави", .en: "Bench Dips",
+            .ru: "Обратные отжимания от скамьи", .es: "Fondos en banco",
+            .de: "Bank-Dips", .fr: "Dips sur banc",
+            .pt: "Mergulho no banco", .pl: "Dipy na ławce", .it: "Dips alla panca",
+        ]),
+        LibraryExercise(id: "kickback", muscleGroup: .triceps, names: [
+            .uk: "Кікбек з гантеллю", .en: "Dumbbell Kickback",
+            .ru: "Кикбэк с гантелью", .es: "Patada con mancuerna",
+            .de: "Kickback Kurzhantel", .fr: "Kickback haltère",
+            .pt: "Coice com halter", .pl: "Kickback hantlą",
+            .it: "Kickback con manubrio",
+        ]),
+        LibraryExercise(id: "diamond_pushup", muscleGroup: .triceps, names: [
+            .uk: "Алмазні віджимання", .en: "Diamond Push-Up",
+            .ru: "Алмазные отжимания", .es: "Flexiones diamante",
+            .de: "Diamant-Liegestütze", .fr: "Pompes diamant",
+            .pt: "Flexão diamante", .pl: "Pompki diamentowe",
+            .it: "Piegamenti diamante",
+        ]),
+        
+        // MARK: - НОГИ
+        LibraryExercise(id: "squat_back", muscleGroup: .legs, names: [
+            .uk: "Присідання зі штангою (спина)", .en: "Back Squat",
+            .ru: "Приседания со штангой (спина)", .es: "Sentadilla trasera",
+            .de: "Kniebeuge", .fr: "Squat barre dorsale",
+            .pt: "Agachamento livre", .pl: "Przysiad ze sztangą",
+            .it: "Squat con bilanciere",
+        ]),
+        LibraryExercise(id: "squat_front", muscleGroup: .legs, names: [
+            .uk: "Фронтальні присідання", .en: "Front Squat",
+            .ru: "Фронтальные приседания", .es: "Sentadilla frontal",
+            .de: "Frontkniebeuge", .fr: "Front squat",
+            .pt: "Agachamento frontal", .pl: "Przysiad przedni",
+            .it: "Front squat",
+        ]),
+        LibraryExercise(id: "squat_smith", muscleGroup: .legs, names: [
+            .uk: "Присідання в Сміті", .en: "Smith Machine Squat",
+            .ru: "Приседания в Смите", .es: "Sentadilla en Smith",
+            .de: "Smith-Maschinen-Kniebeuge", .fr: "Squat Smith",
+            .pt: "Agachamento na Smith", .pl: "Przysiad na Smith",
+            .it: "Squat alla Smith",
+        ]),
+        LibraryExercise(id: "squat_hack", muscleGroup: .legs, names: [
+            .uk: "Гак-присідання", .en: "Hack Squat", .ru: "Гакк-приседания",
+            .es: "Hack squat", .de: "Hackenschmidt-Kniebeuge",
+            .fr: "Hack squat", .pt: "Hack squat", .pl: "Hack squat",
+            .it: "Hack squat",
+        ]),
+        LibraryExercise(id: "squat_bulgarian", muscleGroup: .legs, names: [
+            .uk: "Болгарські присідання", .en: "Bulgarian Split Squat",
+            .ru: "Болгарские приседания", .es: "Sentadilla búlgara",
+            .de: "Bulgarische Kniebeuge", .fr: "Split squat bulgare",
+            .pt: "Agachamento búlgaro", .pl: "Przysiad bułgarski",
+            .it: "Squat bulgaro",
+        ]),
+        LibraryExercise(id: "goblet_squat", muscleGroup: .legs, names: [
+            .uk: "Гоблет-присідання з гантеллю", .en: "Goblet Squat",
+            .ru: "Гоблет-приседания с гантелью", .es: "Sentadilla goblet",
+            .de: "Goblet Squat", .fr: "Goblet squat",
+            .pt: "Agachamento goblet", .pl: "Goblet squat",
+            .it: "Goblet squat",
+        ]),
+        LibraryExercise(id: "leg_press", muscleGroup: .legs, names: [
+            .uk: "Жим ногами в тренажері", .en: "Leg Press",
+            .ru: "Жим ногами в тренажёре", .es: "Prensa de piernas",
+            .de: "Beinpresse", .fr: "Presse à cuisses",
+            .pt: "Leg press", .pl: "Wyciskanie nogami",
+            .it: "Pressa orizzontale",
+        ]),
+        LibraryExercise(id: "leg_press_narrow", muscleGroup: .legs, names: [
+            .uk: "Жим ногами вузькою постановкою", .en: "Narrow Stance Leg Press",
+            .ru: "Жим ногами узкой постановкой", .es: "Prensa piernas juntas",
+            .de: "Beinpresse enge Stellung", .fr: "Presse pieds serrés",
+            .pt: "Leg press pernas juntas", .pl: "Wyciskanie wąsko",
+            .it: "Pressa stretta",
+        ]),
+        LibraryExercise(id: "leg_press_wide", muscleGroup: .legs, names: [
+            .uk: "Жим ногами широкою постановкою", .en: "Wide Stance Leg Press",
+            .ru: "Жим ногами широкой постановкой", .es: "Prensa piernas separadas",
+            .de: "Beinpresse weite Stellung", .fr: "Presse pieds écartés",
+            .pt: "Leg press pernas abertas", .pl: "Wyciskanie szeroko",
+            .it: "Pressa larga",
+        ]),
+        LibraryExercise(id: "leg_extension", muscleGroup: .legs, names: [
+            .uk: "Розгинання ніг сидячи", .en: "Leg Extension",
+            .ru: "Разгибание ног сидя", .es: "Extensión de cuádriceps",
+            .de: "Beinstrecker", .fr: "Leg extension",
+            .pt: "Cadeira extensora", .pl: "Prostowanie nóg",
+            .it: "Leg extension",
+        ]),
+        LibraryExercise(id: "leg_curl_lying", muscleGroup: .legs, names: [
+            .uk: "Згинання ніг лежачи", .en: "Lying Leg Curl",
+            .ru: "Сгибание ног лёжа", .es: "Curl femoral acostado",
+            .de: "Beinbeuger liegend", .fr: "Leg curl couché",
+            .pt: "Mesa flexora", .pl: "Uginanie nóg leżąc",
+            .it: "Leg curl prono",
+        ]),
+        LibraryExercise(id: "leg_curl_seated", muscleGroup: .legs, names: [
+            .uk: "Згинання ніг сидячи", .en: "Seated Leg Curl",
+            .ru: "Сгибание ног сидя", .es: "Curl femoral sentado",
+            .de: "Beinbeuger sitzend", .fr: "Leg curl assis",
+            .pt: "Cadeira flexora", .pl: "Uginanie nóg siedząc",
+            .it: "Leg curl seduto",
+        ]),
+        LibraryExercise(id: "lunges_walking", muscleGroup: .legs, names: [
+            .uk: "Випади з гантелями (ходьба)", .en: "Walking Lunges",
+            .ru: "Выпады с гантелями (ходьба)", .es: "Zancadas caminando",
+            .de: "Ausfallschritte gehend", .fr: "Fentes marchées",
+            .pt: "Afundo caminhando", .pl: "Wykroki chodzone",
+            .it: "Affondi camminati",
+        ]),
+        LibraryExercise(id: "lunges_reverse", muscleGroup: .legs, names: [
+            .uk: "Зворотні випади", .en: "Reverse Lunges",
+            .ru: "Обратные выпады", .es: "Zancadas inversas",
+            .de: "Ausfallschritte rückwärts", .fr: "Fentes arrière",
+            .pt: "Afundo reverso", .pl: "Wykroki w tył",
+            .it: "Affondi indietro",
+        ]),
+        LibraryExercise(id: "lunges_static", muscleGroup: .legs, names: [
+            .uk: "Випади на місці", .en: "Static Lunges",
+            .ru: "Выпады на месте", .es: "Zancadas estáticas",
+            .de: "Statische Ausfallschritte", .fr: "Fentes statiques",
+            .pt: "Afundo estático", .pl: "Wykroki w miejscu",
+            .it: "Affondi statici",
+        ]),
+        LibraryExercise(id: "step_up", muscleGroup: .legs, names: [
+            .uk: "Зашагування на лаву", .en: "Step-Up",
+            .ru: "Зашагивания на скамью", .es: "Subida al banco",
+            .de: "Step-Up", .fr: "Montée sur banc",
+            .pt: "Subida no banco", .pl: "Wchodzenie na skrzynię",
+            .it: "Step-up",
+        ]),
+        LibraryExercise(id: "glute_bridge_barbell", muscleGroup: .legs, names: [
+            .uk: "Ягодичний міст зі штангою", .en: "Barbell Glute Bridge",
+            .ru: "Ягодичный мост со штангой", .es: "Puente de glúteos con barra",
+            .de: "Glute Bridge mit Langhantel", .fr: "Pont fessier barre",
+            .pt: "Elevação pélvica com barra", .pl: "Most pośladkowy ze sztangą",
+            .it: "Hip thrust con bilanciere",
+        ]),
+        LibraryExercise(id: "hip_thrust", muscleGroup: .legs, names: [
+            .uk: "Хіп-траст", .en: "Hip Thrust", .ru: "Хип-траст",
+            .es: "Hip thrust", .de: "Hüftheben", .fr: "Hip thrust",
+            .pt: "Hip thrust", .pl: "Hip thrust", .it: "Hip thrust",
+        ]),
+        LibraryExercise(id: "calf_raise_standing", muscleGroup: .legs, names: [
+            .uk: "Підйоми на носки стоячи", .en: "Standing Calf Raise",
+            .ru: "Подъёмы на носки стоя", .es: "Elevación de gemelos de pie",
+            .de: "Wadenheben stehend", .fr: "Mollets debout",
+            .pt: "Panturrilha em pé", .pl: "Łydki stojąc",
+            .it: "Calf in piedi",
+        ]),
+        LibraryExercise(id: "calf_raise_seated", muscleGroup: .legs, names: [
+            .uk: "Підйоми на носки сидячи", .en: "Seated Calf Raise",
+            .ru: "Подъёмы на носки сидя", .es: "Elevación de gemelos sentado",
+            .de: "Wadenheben sitzend", .fr: "Mollets assis",
+            .pt: "Panturrilha sentado", .pl: "Łydki siedząc",
+            .it: "Calf seduto",
+        ]),
+        LibraryExercise(id: "calf_raise_leg_press", muscleGroup: .legs, names: [
+            .uk: "Підйоми на носки в жимі ногами", .en: "Leg Press Calf Raise",
+            .ru: "Подъёмы на носки в жиме ногами", .es: "Gemelos en prensa",
+            .de: "Wadenheben Beinpresse", .fr: "Mollets à la presse",
+            .pt: "Panturrilha no leg press", .pl: "Łydki na suwnicy",
+            .it: "Calf alla pressa",
+        ]),
+        LibraryExercise(id: "abductor_machine", muscleGroup: .legs, names: [
+            .uk: "Відведення ніг в тренажері", .en: "Hip Abductor Machine",
+            .ru: "Отведение ног в тренажёре", .es: "Abductores en máquina",
+            .de: "Abduktoren-Maschine", .fr: "Abducteurs machine",
+            .pt: "Cadeira abdutora", .pl: "Odwodzenie nóg",
+            .it: "Abduttori macchina",
+        ]),
+        LibraryExercise(id: "adductor_machine", muscleGroup: .legs, names: [
+            .uk: "Зведення ніг в тренажері", .en: "Hip Adductor Machine",
+            .ru: "Сведение ног в тренажёре", .es: "Aductores en máquina",
+            .de: "Adduktoren-Maschine", .fr: "Adducteurs machine",
+            .pt: "Cadeira adutora", .pl: "Przywodzenie nóg",
+            .it: "Adduttori macchina",
+        ]),
+        
+        // MARK: - ПРЕС
+        LibraryExercise(id: "crunch", muscleGroup: .abs, names: [
+            .uk: "Скручування лежачи", .en: "Crunch",
+            .ru: "Скручивания лёжа", .es: "Abdominales (crunch)",
+            .de: "Crunches", .fr: "Crunch", .pt: "Abdominal supra",
+            .pl: "Brzuszki", .it: "Crunch",
+        ]),
+        LibraryExercise(id: "reverse_crunch", muscleGroup: .abs, names: [
+            .uk: "Зворотні скручування", .en: "Reverse Crunch",
+            .ru: "Обратные скручивания", .es: "Crunch inverso",
+            .de: "Umgekehrte Crunches", .fr: "Crunch inversé",
+            .pt: "Abdominal infra", .pl: "Odwrócone brzuszki",
+            .it: "Crunch inverso",
+        ]),
+        LibraryExercise(id: "leg_raise_hanging", muscleGroup: .abs, names: [
+            .uk: "Підйом ніг у висі", .en: "Hanging Leg Raise",
+            .ru: "Подъём ног в висе", .es: "Elevación de piernas colgado",
+            .de: "Beinheben hängend", .fr: "Relevés de jambes suspendu",
+            .pt: "Elevação pendurado", .pl: "Unoszenie nóg w zwisie",
+            .it: "Sollevamento gambe in sospensione",
+        ]),
+        LibraryExercise(id: "leg_raise_lying", muscleGroup: .abs, names: [
+            .uk: "Підйом ніг лежачи", .en: "Lying Leg Raise",
+            .ru: "Подъём ног лёжа", .es: "Elevación de piernas acostado",
+            .de: "Beinheben liegend", .fr: "Relevés de jambes au sol",
+            .pt: "Elevação deitado", .pl: "Unoszenie nóg leżąc",
+            .it: "Sollevamento gambe a terra",
+        ]),
+        LibraryExercise(id: "plank", muscleGroup: .abs, names: [
+            .uk: "Планка", .en: "Plank", .ru: "Планка",
+            .es: "Plancha", .de: "Plank", .fr: "Planche",
+            .pt: "Prancha", .pl: "Deska", .it: "Plank",
+        ]),
+        LibraryExercise(id: "side_plank", muscleGroup: .abs, names: [
+            .uk: "Бокова планка", .en: "Side Plank",
+            .ru: "Боковая планка", .es: "Plancha lateral",
+            .de: "Seitlicher Plank", .fr: "Planche latérale",
+            .pt: "Prancha lateral", .pl: "Deska boczna",
+            .it: "Plank laterale",
+        ]),
+        LibraryExercise(id: "russian_twist", muscleGroup: .abs, names: [
+            .uk: "Російські твісти", .en: "Russian Twist",
+            .ru: "Русские твисты", .es: "Giro ruso",
+            .de: "Russian Twist", .fr: "Russian twist",
+            .pt: "Russian twist", .pl: "Russian twist",
+            .it: "Russian twist",
+        ]),
+        LibraryExercise(id: "wood_chopper", muscleGroup: .abs, names: [
+            .uk: "Лісоруб на блоці", .en: "Wood Chopper",
+            .ru: "Дровосек на блоке", .es: "Leñador en polea",
+            .de: "Holzhacker am Kabelzug", .fr: "Bûcheron à la poulie",
+            .pt: "Lenhador na polia", .pl: "Drwal na wyciągu",
+            .it: "Boscaiolo ai cavi",
+        ]),
+        LibraryExercise(id: "cable_crunch", muscleGroup: .abs, names: [
+            .uk: "Скручування на блоці", .en: "Cable Crunch",
+            .ru: "Скручивания на блоке", .es: "Abdominales en polea",
+            .de: "Crunches am Kabelzug", .fr: "Crunch poulie",
+            .pt: "Abdominal na polia", .pl: "Brzuszki wyciągiem",
+            .it: "Crunch ai cavi",
+        ]),
+        LibraryExercise(id: "ab_wheel", muscleGroup: .abs, names: [
+            .uk: "Ролик для преса", .en: "Ab Wheel Rollout",
+            .ru: "Ролик для пресса", .es: "Rueda abdominal",
+            .de: "Bauchroller", .fr: "Roue abdominale",
+            .pt: "Roda abdominal", .pl: "Kółko do brzucha",
+            .it: "Ruota addominale",
+        ]),
+        LibraryExercise(id: "v_up", muscleGroup: .abs, names: [
+            .uk: "V-up (складка)", .en: "V-Up", .ru: "V-up (складка)",
+            .es: "V-up", .de: "V-Ups", .fr: "V-up",
+            .pt: "V-up", .pl: "V-up", .it: "V-up",
+        ]),
+        LibraryExercise(id: "bicycle_crunch", muscleGroup: .abs, names: [
+            .uk: "Велосипед лежачи", .en: "Bicycle Crunch",
+            .ru: "Велосипед лёжа", .es: "Bicicleta abdominal",
+            .de: "Fahrrad-Crunch", .fr: "Vélo abdominal",
+            .pt: "Bicicleta abdominal", .pl: "Rower brzuszkowy",
+            .it: "Bicicletta addominale",
+        ]),
+        LibraryExercise(id: "mountain_climbers", muscleGroup: .abs, names: [
+            .uk: "Альпініст", .en: "Mountain Climbers", .ru: "Альпинист",
+            .es: "Escaladores", .de: "Mountain Climbers", .fr: "Mountain climbers",
+            .pt: "Escalador", .pl: "Wspinaczka", .it: "Mountain climbers",
+        ]),
+        LibraryExercise(id: "dead_bug", muscleGroup: .abs, names: [
+            .uk: "Мертвий жук", .en: "Dead Bug", .ru: "Мёртвый жук",
+            .es: "Bicho muerto", .de: "Dead Bug", .fr: "Dead bug",
+            .pt: "Dead bug", .pl: "Dead bug", .it: "Dead bug",
+        ]),
+        
+        // MARK: - ІНШЕ
+        LibraryExercise(id: "wrist_curl", muscleGroup: .other, names: [
+            .uk: "Згинання зап'ясть зі штангою", .en: "Wrist Curl",
+            .ru: "Сгибание запястий со штангой", .es: "Flexión de muñecas",
+            .de: "Handgelenk-Curls", .fr: "Flexion poignets",
+            .pt: "Rosca de punho", .pl: "Zginanie nadgarstków",
+            .it: "Curl polsi",
+        ]),
+        LibraryExercise(id: "wrist_extension", muscleGroup: .other, names: [
+            .uk: "Розгинання зап'ясть", .en: "Wrist Extension",
+            .ru: "Разгибание запястий", .es: "Extensión de muñecas",
+            .de: "Handgelenk-Extension", .fr: "Extension poignets",
+            .pt: "Extensão de punho", .pl: "Prostowanie nadgarstków",
+            .it: "Estensione polsi",
+        ]),
+        LibraryExercise(id: "farmer_walk", muscleGroup: .other, names: [
+            .uk: "Прогулянка фермера", .en: "Farmer's Walk",
+            .ru: "Прогулка фермера", .es: "Paseo del granjero",
+            .de: "Farmer's Walk", .fr: "Marche du fermier",
+            .pt: "Caminhada do fazendeiro", .pl: "Spacer farmera",
+            .it: "Camminata del contadino",
+        ]),
+        LibraryExercise(id: "kettlebell_swing", muscleGroup: .other, names: [
+            .uk: "Махи гирею", .en: "Kettlebell Swing",
+            .ru: "Махи гирей", .es: "Swing con pesa rusa",
+            .de: "Kettlebell Swing", .fr: "Swing kettlebell",
+            .pt: "Swing com kettlebell", .pl: "Swing kettlebell",
+            .it: "Swing con kettlebell",
+        ]),
+        LibraryExercise(id: "burpee", muscleGroup: .other, names: [
+            .uk: "Берпі", .en: "Burpee", .ru: "Берпи",
+            .es: "Burpees", .de: "Burpees", .fr: "Burpees",
+            .pt: "Burpees", .pl: "Burpee", .it: "Burpee",
+        ]),
+    ]
+    
+    static func find(name: String) -> LibraryExercise? {
+        let trimmed = name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        return all.first { libEx in
+            libEx.names.values.contains { $0.lowercased() == trimmed }
+        }
+    }
+    
+    static func exercises(in group: MuscleGroup) -> [LibraryExercise] {
+        all.filter { $0.muscleGroup == group }
+    }
+    
+    /// Шукає вправи по підрядку. Шукає у всіх перекладах, але повертає назву поточною мовою.
+    /// Якщо searchText порожній — повертає всі вправи.
+    static func search(_ searchText: String, language: AppLanguage?) -> [LibraryExercise] {
+        let trimmed = searchText.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return all }
+        return all.filter { libEx in
+            // Шукаємо у всіх мовних варіантах назви
+            libEx.names.values.contains { name in
+                name.lowercased().contains(trimmed)
+            }
+        }
+    }
+}
